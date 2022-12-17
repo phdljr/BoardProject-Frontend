@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-export default function Main() {
+export default function BoardListPage() {
     const [boardList, setBoardList] = useState([]);
 
     useEffect(() => {
@@ -15,9 +15,9 @@ export default function Main() {
     return (
         <>
             {boardList.map((board, index) => (
-                <div>
-                    <span key={index}>{board.id}</span>
-                    <span key={index}>{board.title}</span>
+                <div key={index}>
+                    <span>{board.id}</span>
+                    <span>{board.title}</span>
                 </div>
             ))}
         </>
