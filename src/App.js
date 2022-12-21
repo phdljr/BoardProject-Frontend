@@ -7,6 +7,8 @@ import BoardListPage from './component/page/BoardListPage';
 
 // export default const App = () => {} 이거랑 같음
 export default function App() {
+  console.log(process.env.REACT_APP_SERVER_HOST)
+
   return (
     <>
       <BrowserRouter>
