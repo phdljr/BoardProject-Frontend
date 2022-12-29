@@ -9,7 +9,7 @@ export default function BoardListPage() {
     const [currentPageNumber, setCurrentPageNumber] = useState(1);
 
     useEffect(() => {
-        axios.get("http://localhost:8080/board")
+        axios.get(process.env.REACT_APP_SERVER_HOST + "/board?page=1")
             .then(res => {
                 setBoardList(res.data.boardList)
                 setPageList(res.data.pageList)
@@ -56,7 +56,6 @@ export default function BoardListPage() {
                             <td>{board.hit}</td>
                         </tr>
                     ))}
-
                 </tbody>
             </Table>
             <Pagination style={{ justifyContent: "center" }}>

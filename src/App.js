@@ -4,6 +4,8 @@ import Footer from './component/footer/Footer'
 import EmptyPage from './component/page/EmptyPage';
 import MainPage from './component/page/MainPage';
 import BoardListPage from './component/page/BoardListPage';
+import LoginPage from './component/page/LoginPage'
+import RegisterPage from './component/page/RegisterPage'
 
 // export default const App = () => {} 이거랑 같음
 export default function App() {
@@ -18,6 +20,8 @@ export default function App() {
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/board" element={<BoardListPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
 
           {/* <Route path="/day/:day" element={<Day />} />
 					<Route path="/create_word" element={<CreateWord />} />
