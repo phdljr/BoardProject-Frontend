@@ -6,6 +6,7 @@ import Container from 'react-bootstrap/Container';
 import axios from 'axios';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import '../../style/AlignmentCenter.css';
 
 export default function Login() {
     const [user, setUser] = useState({ email: '', password: '' })
@@ -28,7 +29,7 @@ export default function Login() {
     }
 
     return (
-        <div style={{ padding: "50px" }}>
+        <div className="alignmentCenter boxShadow">
             <Container className="panel">
                 <Form>
                     <Form.Group as={Row} className="mb-3" controlId="formPlaintext">
@@ -39,14 +40,14 @@ export default function Login() {
 
                     <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
                         <Col sm>
-                            <Form.Control type="password" placeholder="Password" onChange={handlePassword} />
+                            <Form.Control type="password" placeholder="비밀번호" onChange={handlePassword} />
                         </Col>
                     </Form.Group>
                     <br />
 
                     <div className="d-grid gap-1">
                         <Button variant="secondary" onClick={login} >
-                            Sign In
+                            로그인
                         </Button>
                     </div>
                 </Form>

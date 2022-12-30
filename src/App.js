@@ -9,8 +9,6 @@ import RegisterPage from './component/page/RegisterPage'
 
 // export default const App = () => {} 이거랑 같음
 export default function App() {
-  console.log(process.env.REACT_APP_SERVER_HOST)
-
   return (
     <>
       <BrowserRouter>
@@ -22,11 +20,6 @@ export default function App() {
           <Route path="/board" element={<BoardListPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-
-          {/* <Route path="/day/:day" element={<Day />} />
-					<Route path="/create_word" element={<CreateWord />} />
-					<Route path="/create_day" element={<CreateDay />} /> */}
-
           <Route path="*" element={<EmptyPage />} />
         </Routes>
 

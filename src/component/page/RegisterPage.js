@@ -6,6 +6,7 @@ import Container from 'react-bootstrap/Container';
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import '../../style/AlignmentCenter.css';
 
 export default function RegisterPage() {
     const [user, setUser] = useState({ email: '', password: '', nickname: '' })
@@ -32,37 +33,44 @@ export default function RegisterPage() {
     }
 
     return (
-        <div style={{ padding: "50px" }}>
+        <div className="alignmentCenter boxShadow">
             <Container className="panel">
                 <Form>
                     <Form.Group as={Row} className="mb-3" controlId="formBasicEmail">
-                        <Col sm>
+                        <Col sm="auto">
                             <Form.Control type="email" placeholder="Email" onChange={handleEmail} />
+                        </Col>
+                        <Col sm="auto">
+                            <Button>중복 확인</Button>
+                        </Col>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="mb-3" controlId="formPlaintext">
+                        <Col sm>
+                            <Form.Control type="text" placeholder="닉네임" onChange={handleNickname} />
+                        </Col>
+                        <Col sm="auto">
+                            <Button>중복 확인</Button>
                         </Col>
                     </Form.Group>
 
                     <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
                         <Col sm>
-                            <Form.Control type="password" placeholder="Password" onChange={handlePassword} />
+                            <Form.Control type="password" placeholder="비밀번호" onChange={handlePassword} />
                         </Col>
                     </Form.Group>
 
-                    {/* <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
+                    <Form.Group as={Row} className="mb-3" controlId="formPlaintextPasswordValidation">
                         <Col sm>
-                            <Form.Control type="password" placeholder="Confirm Password" />
-                        </Col>
-                    </Form.Group> */}
-
-                    <Form.Group as={Row} className="mb-3" controlId="formPlaintext">
-                        <Col sm>
-                            <Form.Control type="text" placeholder="Nickname" onChange={handleNickname} />
+                            <Form.Control type="password" placeholder="비밀번호 확인" />
                         </Col>
                     </Form.Group>
+
                     <br />
 
                     <div className="d-grid gap-1">
                         <Button variant="secondary" onClick={register}>
-                            Sign Up
+                            회원가입
                         </Button>
                     </div>
                 </Form>
