@@ -29,7 +29,7 @@ export default function Login() {
     }
 
     return (
-        <div className="alignmentCenter boxShadow">
+        <div className="alignmentCenter shadow">
             <Container className="panel">
                 <Form>
                     <Form.Group as={Row} className="mb-3" controlId="formPlaintext">
@@ -46,7 +46,7 @@ export default function Login() {
                     <br />
 
                     <div className="d-grid gap-1">
-                        <Button variant="secondary" onClick={login} >
+                        <Button variant="primary" onClick={login} >
                             로그인
                         </Button>
                     </div>

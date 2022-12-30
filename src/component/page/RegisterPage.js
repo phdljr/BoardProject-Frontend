@@ -33,7 +33,7 @@ export default function RegisterPage() {
     }
 
     return (
-        <div className="alignmentCenter boxShadow">
+        <div className="alignmentCenter shadow">
             <Container className="panel">
                 <Form>
                     <Form.Group as={Row} className="mb-3" controlId="formBasicEmail">
@@ -46,7 +46,7 @@ export default function RegisterPage() {
                     </Form.Group>
 
                     <Form.Group as={Row} className="mb-3" controlId="formPlaintext">
-                        <Col sm>
+                        <Col sm="auto">
                             <Form.Control type="text" placeholder="닉네임" onChange={handleNickname} />
                         </Col>
                         <Col sm="auto">
@@ -69,7 +69,7 @@ export default function RegisterPage() {
                     <br />
 
                     <div className="d-grid gap-1">
-                        <Button variant="secondary" onClick={register}>
+                        <Button variant="primary" onClick={register}>
                             회원가입
                         </Button>
                     </div>
