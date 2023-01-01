@@ -33,7 +33,7 @@ export default function RegisterPage() {
     }
 
     return (
-        <div className="alignmentCenter shadow">
+        <div className="alignmentCenter largePaggind shadow">
             <Container className="panel">
                 <Form>
                     <Form.Group as={Row} className="mb-3" controlId="formBasicEmail">
