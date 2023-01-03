@@ -1,16 +1,24 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Button, Card } from 'react-bootstrap';
+import { Button, Card, Form, InputGroup } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import "../../style/AlignmentCenter.css"
 
 export default function BoardPage() {
     const { boardId } = useParams();
     const [board, setBoard] = useState();
+    const [replyList, setReplyList] = useState([]);
     const [loadData, isLoadData] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
+        getBoard();
+        // getBoardLike();
+        getReply();
+        // getReplyLike();
+    }, [])
+
+    function getBoard() {
         axios.get(process.env.REACT_APP_SERVER_HOST + "/board/" + boardId)
             .then(res => {
                 isLoadData(true)
@@ -19,9 +27,20 @@ export default function BoardPage() {
             })
             .catch(() => {
                 isLoadData(false)
-                console.log("실패")
+                console.log("게시글 실패")
             })
-    }, [boardId])
+    }
+
+    function getReply() {
+        axios.get(process.env.REACT_APP_SERVER_HOST + "/reply/" + boardId)
+            .then(res => {
+                setReplyList(res.data)
+                console.log(res.data)
+            })
+            .catch(() => {
+                console.log("댓글 실패")
+            })
+    }
 
     if (loadData === null) {
         return (
@@ -34,8 +53,8 @@ export default function BoardPage() {
         )
     }
     return (
-        <>
-            <Card className="alignmentCenter" style={{ width: '80rem' }}>
+        <div style={{ padding: '50px 200px 50px 200px' }}>
+            <Card style={{ width: '100%' }}>
                 <Card.Body>
                     <Card.Title as={"h1"}>{board.title}</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted">
@@ -44,23 +63,39 @@ export default function BoardPage() {
                     </Card.Subtitle>
                     <br />
                     <hr />
-                    <Card.Text>
+                    <Card.Text style={{ padding: "50px 0px 50px 0px" }}>
                         {board.content}
                     </Card.Text>
+                    <div style={{ textAlign: "center" }}>
+                        <Button>👍{board.like}</Button>
+                    </div>
+                    <Card.Text>
+                        <h4>댓글</h4>
+                        {replyList.map((reply, index) => (
+                            <div key={index}>
+                                <hr />
+                                {/* <p>{reply.nickname}</p> */}
+                                {reply.content}
+                                <Button>👍{board.like}</Button>
+                            </div>
+                        ))}
+                    </Card.Text>
+                    <InputGroup className="mb-3">
+                        <Form.Control
+                            placeholder="댓글을 작성해주세요."
+                            aria-label="댓글을 작성해주세요."
+                            aria-describedby="basic-addon2"
+                            style={{ height: '100px' }}
+                        />
+                        <Button variant="primary" id="button-addon2">
+                            댓글 작성
+                        </Button>
+                    </InputGroup>
                 </Card.Body>
                 <Card.Footer>
-                    <Button onClick={(e) => { navigate('/board') }}>메인 화면으로</Button>
+                    <Button onClick={(e) => { navigate('/board') }}>게시판으로</Button>
                 </Card.Footer>
             </Card>
-            {/* <h1>{board.title}</h1>
-            <br></br>
-            <div className="alignmentCenter">
-                <p>id: {board.id}</p>
-                <p>title: {board.title}</p>
-                <p>nickname: {board.nickname}</p>
-                <p>content: {board.content}</p>
-                <p>hit: {board.hit}</p>
-            </div> */}
-        </>
+        </div>
     )
 }

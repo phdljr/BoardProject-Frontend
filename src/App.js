@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Header from './component/header/Header'
-import Footer from './component/footer/Footer'
+// import Footer from './component/footer/Footer'
 import EmptyPage from './component/page/EmptyPage';
 import MainPage from './component/page/MainPage';
 import BoardListPage from './component/page/BoardListPage';
@@ -24,7 +24,7 @@ export default function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="*" element={<EmptyPage />} />
         </Routes>
-        <Footer />
+        {/* <Footer /> */}
       </BrowserRouter>
     </>
   );

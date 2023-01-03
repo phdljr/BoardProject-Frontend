@@ -7,16 +7,22 @@ import axios from 'axios';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import '../../style/AlignmentCenter.css';
+import { useStore } from "../../store/store.js";
 
 export default function Login() {
     const [user, setUser] = useState({ email: '', password: '' })
     const navigate = useNavigate();
+    const { login } = useStore(state => state);
 
-    function login() {
+    function handleLogin() {
         axios.post(process.env.REACT_APP_SERVER_HOST + "/login", user)
             .then(res => {
                 console.log(res.data)
-                navigate('/')
+                login();
+                navigate('/');
+            })
+            .catch(err => {
+                alert("로그인 실패")
             })
     }
 
@@ -46,7 +52,7 @@ export default function Login() {
                     <br />
 
                     <div className="d-grid gap-1">
-                        <Button variant="primary" onClick={login} >
+                        <Button variant="primary" onClick={handleLogin} >
                             로그인
                         </Button>
                     </div>
