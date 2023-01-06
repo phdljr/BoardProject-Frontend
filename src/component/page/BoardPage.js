@@ -69,18 +69,16 @@ export default function BoardPage() {
                     <div style={{ textAlign: "center" }}>
                         <Button>👍{board.like}</Button>
                     </div>
-                    <Card.Text>
-                        <h4>댓글</h4>
-                        {replyList.map((reply, index) => (
-                            <div key={index}>
-                                <hr />
-                                {/* <p>{reply.nickname}</p> */}
-                                {reply.content}
-                                <Button>👍{board.like}</Button>
-                            </div>
-                        ))}
-                    </Card.Text>
-                    <InputGroup className="mb-3">
+                    <div>댓글</div>
+                    {replyList.map((reply, index) => (
+                        <div key={index}>
+                            <hr />
+                            {/* <p>{reply.nickname}</p> */}
+                            {reply.content}
+                            <Button>👍{board.like}</Button>
+                        </div>
+                    ))}
+                    <InputGroup className="mb-3" style={{ paddingTop: "20px" }}>
                         <Form.Control
                             placeholder="댓글을 작성해주세요."
                             aria-label="댓글을 작성해주세요."

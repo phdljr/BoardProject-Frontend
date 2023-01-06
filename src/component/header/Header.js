@@ -1,11 +1,11 @@
 import { Nav, Navbar } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { useStore } from '../../store/store';
+import useMemberStore from '../../store/MemberStore';
 
 export default function Header() {
 
-    const { isLogin, logout, memberId, nickname } = useStore(state => state);
+    const { logout, memberData } = useMemberStore();
     const navigate = useNavigate();
 
     function handleLogout() {
@@ -27,9 +27,14 @@ export default function Header() {
                 </LinkContainer>
             </Nav>
             <Nav className="justify-content-end">
-                {isLogin === true
+                {memberData.isLogin === true
                     ?
-                    <Nav.Link onClick={handleLogout}>로그아웃</Nav.Link>
+                    <>
+                        <LinkContainer to="/mypage">
+                            <Nav.Link>{memberData.nickname}</Nav.Link>
+                        </LinkContainer>
+                        <Nav.Link onClick={handleLogout}>로그아웃</Nav.Link>
+                    </>
                     :
                     <>
                         <LinkContainer to="/login">

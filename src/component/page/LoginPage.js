@@ -7,18 +7,18 @@ import axios from 'axios';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import '../../style/AlignmentCenter.css';
-import { useStore } from "../../store/store.js";
+import useMemberStore from "../../store/MemberStore";
 
 export default function Login() {
     const [user, setUser] = useState({ email: '', password: '' })
     const navigate = useNavigate();
-    const { login } = useStore(state => state);
+    const { login } = useMemberStore();
 
     function handleLogin() {
         axios.post(process.env.REACT_APP_SERVER_HOST + "/login", user)
             .then(res => {
                 console.log(res.data)
-                login();
+                login(res.data);
                 navigate('/');
             })
             .catch(err => {
