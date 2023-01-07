@@ -9,33 +9,34 @@ import { useNavigate } from 'react-router-dom';
 
 export default function BoardListPage() {
     const [boardList, setBoardList] = useState([]);
-    const [pageList, setPageList] = useState([]);
-    const [currentPageNumber, setCurrentPageNumber] = useState(1);
+    const [pageData, setPageData] = useState(null);
     const [loadData, isLoadData] = useState(null);
+    const [currentPageNumber, setCurrentPageNumber] = useState(1);
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(process.env.REACT_APP_SERVER_HOST + "/board")
+        axios.get(process.env.REACT_APP_SERVER_HOST + `/board?page=${currentPageNumber}`)
             .then(res => {
-                setBoardList(res.data.boardList)
-                setPageList(res.data.pageList)
-                setCurrentPageNumber(res.data.currentPageNumber)
-                isLoadData(true)
-                console.log(res.data)
+                const { boardList, ...pageData } = res.data;
+                setBoardList(boardList);
+                setPageData(pageData);
+                isLoadData(true);
+                console.log(res.data);
             })
             .catch(() => {
-                isLoadData(false)
-                console.log("실패")
+                isLoadData(false);
+                console.log("실패");
             })
-    }, [])
+    }, [currentPageNumber])
 
     function formatDate(date) {
-        let result = date[0] + "-" + date[1] + "-" + date[2] + " " + date[3] + ":" + date[4] + ":" + date[5]
-        return result
+        let result = date[0] + "-" + date[1] + "-" + date[2] + " " + date[3] + ":" + date[4] + ":" + date[5];
+        return result;
     }
 
-    function movePage(page, e) {
-        navigate(`/board?page=${page}`)
+    function movePage(pageNumber, e) {
+        setCurrentPageNumber(pageNumber);
+        navigate(`/board?page=${pageNumber}`);
     }
 
     if (loadData === null) {
@@ -75,15 +76,15 @@ export default function BoardListPage() {
                 </tbody>
             </Table>
             <Pagination style={{ justifyContent: "center" }}>
-                <Pagination.First />
-                <Pagination.Prev />
-                {pageList.map((page, index) => (
-                    <Pagination.Item key={index} active={page === currentPageNumber ? true : false} onClick={(e) => { movePage(page, e) }}>
-                        {page}
+                <Pagination.First disabled={currentPageNumber === 1 ? true : false} onClick={(e) => { movePage(1, e) }} />
+                <Pagination.Prev disabled={!pageData.previousPage} onClick={(e) => { movePage(currentPageNumber - 1, e) }} />
+                {pageData.pageList.map((pageNumber, index) => (
+                    <Pagination.Item key={index} active={pageNumber === pageData.currentPageNumber ? true : false} onClick={(e) => { movePage(pageNumber, e) }}>
+                        {pageNumber}
                     </Pagination.Item>
                 ))}
-                <Pagination.Next />
-                <Pagination.Last />
+                <Pagination.Next disabled={!pageData.nextPage} onClick={(e) => { movePage(currentPageNumber + 1, e) }} />
+                <Pagination.Last onClick={(e) => { movePage(pageData.totalPageNumber, e) }} />
             </Pagination>
         </>
     )

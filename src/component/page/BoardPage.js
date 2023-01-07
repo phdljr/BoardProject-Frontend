@@ -2,44 +2,111 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Button, Card, Form, InputGroup } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
+import useMemberStore from "../../store/MemberStore";
 import "../../style/AlignmentCenter.css"
 
 export default function BoardPage() {
     const { boardId } = useParams();
     const [board, setBoard] = useState();
+    const [boardLikeData, setBoardLikeData] = useState();
     const [replyList, setReplyList] = useState([]);
+    const [replyLikeListData, setReplyLikeListData] = useState([]);
     const [loadData, isLoadData] = useState(null);
     const navigate = useNavigate();
+    const { memberData } = useMemberStore();
 
     useEffect(() => {
         getBoard();
-        // getBoardLike();
+        getBoardLike();
         getReply();
-        // getReplyLike();
-    }, [])
+        getReplyLike();
+    }, []);
 
     function getBoard() {
         axios.get(process.env.REACT_APP_SERVER_HOST + "/board/" + boardId)
             .then(res => {
-                isLoadData(true)
-                setBoard(res.data)
-                console.log(res.data)
+                isLoadData(true);
+                setBoard(res.data);
+                console.log(res.data);
             })
             .catch(() => {
                 isLoadData(false)
-                console.log("게시글 실패")
+                console.log("게시글 실패");
+            });
+    }
+
+    function getBoardLike() {
+        axios.get(process.env.REACT_APP_SERVER_HOST + `/board-like/${boardId}/${memberData.memberId}`)
+            .then(res => {
+                setBoardLikeData(res.data);
+                console.log(res.data);
             })
+            .catch(() => {
+                isLoadData(false);
+                console.log("게시글 실패");
+            });
     }
 
     function getReply() {
         axios.get(process.env.REACT_APP_SERVER_HOST + "/reply/" + boardId)
             .then(res => {
-                setReplyList(res.data)
-                console.log(res.data)
+                setReplyList(res.data);
+                console.log(res.data);
             })
             .catch(() => {
-                console.log("댓글 실패")
+                console.log("댓글 실패");
+            });
+    }
+
+    function getReplyLike() {
+        axios.get(process.env.REACT_APP_SERVER_HOST + `/reply-like/${boardId}/${memberData.memberId}`)
+            .then(res => {
+                setReplyLikeListData(res.data);
+                console.log(res.data);
             })
+            .catch(() => {
+                isLoadData(false);
+                console.log("댓글 좋아요 실패");
+            });
+    }
+
+    function handleBoardLike() {
+        if (!memberData.isLogin) {
+            alert("로그인 하신 후 이용해 주시기 바랍니다.");
+            return;
+        }
+
+        const data = {
+            memberId: memberData.memberId,
+            boardId: boardId
+        };
+
+        if (boardLikeData.hasLiked) {
+            axios.delete(process.env.REACT_APP_SERVER_HOST + `/board-like/${boardId}/${memberData.memberId}`)
+                .then(res => {
+                    setBoardLikeData(res.data);
+                    console.log(res.data);
+                })
+                .catch(err => {
+                    alert("게시판 좋아요 해제 실패");
+                })
+        }
+        else {
+            axios.post(process.env.REACT_APP_SERVER_HOST + "/board-like", data)
+                .then(res => {
+                    setBoardLikeData(res.data);
+                    console.log(res.data);
+                })
+                .catch(err => {
+                    alert("게시판 좋아요 설정 실패");
+                })
+        }
+    }
+
+    function handleReplyLike(reply, e) {
+        /*
+            
+        */
     }
 
     if (loadData === null) {
@@ -67,17 +134,19 @@ export default function BoardPage() {
                         {board.content}
                     </Card.Text>
                     <div style={{ textAlign: "center" }}>
-                        <Button>👍{board.like}</Button>
+                        <Button variant={boardLikeData.hasLiked ? "danger" : "outline-danger"} onClick={handleBoardLike}>👍{boardLikeData.countLike}</Button>
                     </div>
                     <div>댓글</div>
+
                     {replyList.map((reply, index) => (
                         <div key={index}>
                             <hr />
-                            {/* <p>{reply.nickname}</p> */}
-                            {reply.content}
-                            <Button>👍{board.like}</Button>
+                            {reply.nickname}<br />
+                            {reply.content}<br />
+                            <Button variant={reply.hasLiked ? "danger" : "outline-danger"} style={{ marginTop: "5px" }} size="sm" onClick={e => handleReplyLike(reply, e)}>👍{reply.countLike}</Button>
                         </div>
                     ))}
+
                     <InputGroup className="mb-3" style={{ paddingTop: "20px" }}>
                         <Form.Control
                             placeholder="댓글을 작성해주세요."
@@ -94,6 +163,6 @@ export default function BoardPage() {
                     <Button onClick={(e) => { navigate('/board') }}>게시판으로</Button>
                 </Card.Footer>
             </Card>
-        </div>
+        </div >
     )
 }

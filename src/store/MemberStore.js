@@ -6,9 +6,9 @@ const useMemberStore = create(
         (set) => ({
             memberData: {
                 isLogin: false,
-                memberId: null,
+                memberId: -1,
                 nickname: null,
-                memberType: null
+                memberType: "USER"
             },
             login: (data) => {
                 set(() => ({
@@ -24,9 +24,9 @@ const useMemberStore = create(
                 set(() => ({
                     memberData: {
                         isLogin: false,
-                        memberId: null,
+                        memberId: -1,
                         nickname: null,
-                        memberType: null
+                        memberType: "USER"
                     }
                 }))
             }
