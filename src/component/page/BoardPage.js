@@ -18,9 +18,12 @@ export default function BoardPage() {
     const { memberData } = useMemberStore();
 
     useEffect(() => {
-        getBoard();
-        // getReplyLike();
+        callData();
     }, []);
+
+    function callData() {
+        getBoard();
+    }
 
     function getBoard() {
         axios.get(process.env.REACT_APP_SERVER_HOST + "/board/" + boardId)
@@ -53,6 +56,7 @@ export default function BoardPage() {
             .then(res => {
                 setReplyList(res.data);
                 console.log(res.data);
+                // getReplyLike();
                 isLoadData(true)
             })
             .catch(() => {
