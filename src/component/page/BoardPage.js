@@ -10,7 +10,7 @@ export default function BoardPage() {
     const [board, setBoard] = useState();
     const [boardLikeData, setBoardLikeData] = useState();
     const [replyList, setReplyList] = useState([]);
-    const [replyLikeListData, setReplyLikeListData] = useState([]);
+    // const [replyLikeListData, setReplyLikeListData] = useState([]);
     const [loadData, isLoadData] = useState(null);
     const navigate = useNavigate();
     const { memberData } = useMemberStore();
@@ -19,7 +19,7 @@ export default function BoardPage() {
         getBoard();
         getBoardLike();
         getReply();
-        getReplyLike();
+        // getReplyLike();
     }, []);
 
     function getBoard() {
@@ -58,17 +58,17 @@ export default function BoardPage() {
             });
     }
 
-    function getReplyLike() {
-        axios.get(process.env.REACT_APP_SERVER_HOST + `/reply-like/${boardId}/${memberData.memberId}`)
-            .then(res => {
-                setReplyLikeListData(res.data);
-                console.log(res.data);
-            })
-            .catch(() => {
-                isLoadData(false);
-                console.log("댓글 좋아요 실패");
-            });
-    }
+    // function getReplyLike() {
+    //     axios.get(process.env.REACT_APP_SERVER_HOST + `/reply-like/${boardId}/${memberData.memberId}`)
+    //         .then(res => {
+    //             setReplyLikeListData(res.data);
+    //             console.log(res.data);
+    //         })
+    //         .catch(() => {
+    //             isLoadData(false);
+    //             console.log("댓글 좋아요 실패");
+    //         });
+    // }
 
     function handleBoardLike() {
         if (!memberData.isLogin) {
@@ -143,7 +143,7 @@ export default function BoardPage() {
                             <hr />
                             {reply.nickname}<br />
                             {reply.content}<br />
-                            <Button variant={reply.hasLiked ? "danger" : "outline-danger"} style={{ marginTop: "5px" }} size="sm" onClick={e => handleReplyLike(reply, e)}>👍{reply.countLike}</Button>
+                            {/* <Button variant={reply.hasLiked ? "danger" : "outline-danger"} style={{ marginTop: "5px" }} size="sm" onClick={e => handleReplyLike(reply, e)}>👍{reply.countLike}</Button> */}
                         </div>
                     ))}
 
