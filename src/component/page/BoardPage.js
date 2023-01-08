@@ -22,37 +22,41 @@ export default function BoardPage() {
         // getReplyLike();
     }, []);
 
-    async function getBoard() {
-        try {
-            const response = await axios.get(process.env.REACT_APP_SERVER_HOST + "/board/" + boardId);
-            isLoadData(true);
-            setBoard(response.data);
-            console.log(response.data);
-        } catch (err) {
-            isLoadData(false)
-            console.log("게시글 실패");
-        }
+    function getBoard() {
+        axios.get(process.env.REACT_APP_SERVER_HOST + "/board/" + boardId)
+            .then(res => {
+                setBoard(res.data);
+                console.log(res.data);
+            })
+            .catch(() => {
+                isLoadData(false)
+                console.log("게시글 실패");
+            });
     }
 
-    async function getBoardLike() {
-        try {
-            const response = await axios.get(process.env.REACT_APP_SERVER_HOST + `/board-like/${boardId}/${memberData.memberId}`)
-            setBoardLikeData(response.data);
-            console.log(response.data);
-        } catch (err) {
-            isLoadData(false)
-            console.log("게시글 실패");
-        }
+    function getBoardLike() {
+        axios.get(process.env.REACT_APP_SERVER_HOST + `/board-like/${boardId}/${memberData.memberId}`)
+            .then(res => {
+                setBoardLikeData(res.data);
+                console.log(res.data);
+            })
+            .catch(() => {
+                isLoadData(false)
+                console.log("게시글 실패");
+            });
     }
 
-    async function getReply() {
-        try {
-            const response = await axios.get(process.env.REACT_APP_SERVER_HOST + "/reply/" + boardId)
-            setReplyList(response.data);
-            console.log(response.data);
-        } catch (err) {
-            console.log("댓글 실패");
-        }
+    function getReply() {
+        axios.get(process.env.REACT_APP_SERVER_HOST + "/reply/" + boardId)
+            .then(res => {
+                setReplyList(res.data);
+                console.log(res.data);
+                isLoadData(true)
+            })
+            .catch(() => {
+                isLoadData(false)
+                console.log("댓글 실패");
+            });
     }
 
     // function getReplyLike() {
