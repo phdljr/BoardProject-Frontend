@@ -7,18 +7,18 @@ import "../../style/AlignmentCenter.css"
 
 export default function BoardPage() {
     const { boardId } = useParams();
+
     const [board, setBoard] = useState();
     const [boardLikeData, setBoardLikeData] = useState();
     const [replyList, setReplyList] = useState([]);
     // const [replyLikeListData, setReplyLikeListData] = useState([]);
     const [loadData, isLoadData] = useState(null);
+
     const navigate = useNavigate();
     const { memberData } = useMemberStore();
 
     useEffect(() => {
         getBoard();
-        getBoardLike();
-        getReply();
         // getReplyLike();
     }, []);
 
@@ -27,6 +27,7 @@ export default function BoardPage() {
             .then(res => {
                 setBoard(res.data);
                 console.log(res.data);
+                getBoardLike();
             })
             .catch(() => {
                 isLoadData(false)
@@ -39,10 +40,11 @@ export default function BoardPage() {
             .then(res => {
                 setBoardLikeData(res.data);
                 console.log(res.data);
+                getReply();
             })
             .catch(() => {
                 isLoadData(false)
-                console.log("게시글 실패");
+                console.log("게시글 좋아요 실패");
             });
     }
 
