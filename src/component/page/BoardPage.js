@@ -9,9 +9,9 @@ export default function BoardPage() {
     const { boardId } = useParams();
 
     const [board, setBoard] = useState();
-    const [boardLikeData, setBoardLikeData] = useState();
+    const [boardLike, setBoardLike] = useState();
     const [replyList, setReplyList] = useState([]);
-    // const [replyLikeListData, setReplyLikeListData] = useState([]);
+    const [replyLikeList, setReplyLikeList] = useState([]);
     const [loadData, isLoadData] = useState(null);
 
     const navigate = useNavigate();
@@ -29,7 +29,6 @@ export default function BoardPage() {
         axios.get(process.env.REACT_APP_SERVER_HOST + "/board/" + boardId)
             .then(res => {
                 setBoard(res.data);
-                console.log(res.data);
                 getBoardLike();
             })
             .catch(() => {
@@ -41,8 +40,7 @@ export default function BoardPage() {
     function getBoardLike() {
         axios.get(process.env.REACT_APP_SERVER_HOST + `/board-like/${boardId}/${memberData.memberId}`)
             .then(res => {
-                setBoardLikeData(res.data);
-                console.log(res.data);
+                setBoardLike(res.data);
                 getReply();
             })
             .catch(() => {
@@ -56,8 +54,7 @@ export default function BoardPage() {
             .then(res => {
                 setReplyList(res.data);
                 console.log(res.data);
-                // getReplyLike();
-                isLoadData(true)
+                getReplyLike();
             })
             .catch(() => {
                 isLoadData(false)
@@ -65,17 +62,18 @@ export default function BoardPage() {
             });
     }
 
-    // function getReplyLike() {
-    //     axios.get(process.env.REACT_APP_SERVER_HOST + `/reply-like/${boardId}/${memberData.memberId}`)
-    //         .then(res => {
-    //             setReplyLikeListData(res.data);
-    //             console.log(res.data);
-    //         })
-    //         .catch(() => {
-    //             isLoadData(false);
-    //             console.log("댓글 좋아요 실패");
-    //         });
-    // }
+    function getReplyLike() {
+        axios.get(process.env.REACT_APP_SERVER_HOST + `/reply-like/${boardId}/${memberData.memberId}`)
+            .then(res => {
+                setReplyLikeList(res.data);
+                console.log(res.data);
+                isLoadData(true);
+            })
+            .catch((err) => {
+                isLoadData(false);
+                console.log("댓글 좋아요 실패");
+            });
+    }
 
     function handleBoardLike() {
         if (!memberData.isLogin) {
@@ -88,10 +86,10 @@ export default function BoardPage() {
             boardId: boardId
         };
 
-        if (boardLikeData.hasLiked) {
+        if (boardLike.hasLiked) {
             axios.delete(process.env.REACT_APP_SERVER_HOST + `/board-like/${boardId}/${memberData.memberId}`)
                 .then(res => {
-                    setBoardLikeData(res.data);
+                    setBoardLike(res.data);
                     console.log(res.data);
                 })
                 .catch(err => {
@@ -101,7 +99,7 @@ export default function BoardPage() {
         else {
             axios.post(process.env.REACT_APP_SERVER_HOST + "/board-like", data)
                 .then(res => {
-                    setBoardLikeData(res.data);
+                    setBoardLike(res.data);
                     console.log(res.data);
                 })
                 .catch(err => {
@@ -110,10 +108,37 @@ export default function BoardPage() {
         }
     }
 
-    function handleReplyLike(reply, e) {
-        /*
-            
-        */
+    function handleReplyLike(reply) {
+        if (!memberData.isLogin) {
+            alert("로그인 하신 후 이용해 주시기 바랍니다.");
+            return;
+        }
+
+        const data = {
+            memberId: memberData.memberId,
+            replyId: reply.replyId
+        };
+
+        if (reply.hasLiked) {
+            axios.delete(process.env.REACT_APP_SERVER_HOST + `/reply-like/${boardId}/${memberData.memberId}`)
+                .then(res => {
+                    setReplyLikeList(res.data);
+                    console.log(res.data);
+                })
+                .catch(err => {
+                    alert("댓글 좋아요 해제 실패");
+                })
+        }
+        else {
+            axios.post(process.env.REACT_APP_SERVER_HOST + "/reply-like", data)
+                .then(res => {
+                    setReplyLikeList(res.data);
+                    console.log(res.data);
+                })
+                .catch(err => {
+                    alert("댓글 좋아요 설정 실패");
+                })
+        }
     }
 
     if (loadData === null) {
@@ -141,7 +166,7 @@ export default function BoardPage() {
                         {board.content}
                     </Card.Text>
                     <div style={{ textAlign: "center" }}>
-                        <Button variant={boardLikeData.hasLiked ? "danger" : "outline-danger"} onClick={handleBoardLike}>👍{boardLikeData.countLike}</Button>
+                        <Button variant={boardLike.hasLiked ? "danger" : "outline-danger"} onClick={handleBoardLike}>👍{boardLike.countLike}</Button>
                     </div>
                     <div>댓글</div>
 
@@ -150,7 +175,7 @@ export default function BoardPage() {
                             <hr />
                             {reply.nickname}<br />
                             {reply.content}<br />
-                            {/* <Button variant={reply.hasLiked ? "danger" : "outline-danger"} style={{ marginTop: "5px" }} size="sm" onClick={e => handleReplyLike(reply, e)}>👍{reply.countLike}</Button> */}
+                            <Button variant={replyLikeList[index].hasLiked ? "danger" : "outline-danger"} style={{ marginTop: "5px" }} size="sm" onClick={() => handleReplyLike(replyLikeList[index])}>👍{replyLikeList[index].countLike}</Button>
                         </div>
                     ))}
 
