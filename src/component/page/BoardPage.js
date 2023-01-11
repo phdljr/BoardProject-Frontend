@@ -53,7 +53,6 @@ export default function BoardPage() {
         axios.get(process.env.REACT_APP_SERVER_HOST + "/reply/" + boardId)
             .then(res => {
                 setReplyList(res.data);
-                console.log(res.data);
                 getReplyLike();
             })
             .catch(() => {
@@ -66,7 +65,6 @@ export default function BoardPage() {
         axios.get(process.env.REACT_APP_SERVER_HOST + `/reply-like/${boardId}/${memberData.memberId}`)
             .then(res => {
                 setReplyLikeList(res.data);
-                console.log(res.data);
                 isLoadData(true);
             })
             .catch((err) => {
@@ -90,7 +88,6 @@ export default function BoardPage() {
             axios.delete(process.env.REACT_APP_SERVER_HOST + `/board-like/${boardId}/${memberData.memberId}`)
                 .then(res => {
                     setBoardLike(res.data);
-                    console.log(res.data);
                 })
                 .catch(err => {
                     alert("게시판 좋아요 해제 실패");
@@ -100,7 +97,6 @@ export default function BoardPage() {
             axios.post(process.env.REACT_APP_SERVER_HOST + "/board-like", data)
                 .then(res => {
                     setBoardLike(res.data);
-                    console.log(res.data);
                 })
                 .catch(err => {
                     alert("게시판 좋아요 설정 실패");
