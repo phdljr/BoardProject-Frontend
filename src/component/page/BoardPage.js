@@ -120,10 +120,11 @@ export default function BoardPage() {
         };
 
         if (reply.hasLiked) {
-            axios.delete(process.env.REACT_APP_SERVER_HOST + `/reply-like/${boardId}/${memberData.memberId}`)
+            axios.delete(process.env.REACT_APP_SERVER_HOST + `/reply-like/${reply.replyId}/${memberData.memberId}`)
                 .then(res => {
-                    setReplyLikeList(res.data);
-                    console.log(res.data);
+                    let temp = [...replyLikeList];
+                    temp[replyLikeList.findIndex(r => r.replyId === res.data.replyId)] = res.data;
+                    setReplyLikeList(temp);
                 })
                 .catch(err => {
                     alert("댓글 좋아요 해제 실패");
@@ -132,8 +133,9 @@ export default function BoardPage() {
         else {
             axios.post(process.env.REACT_APP_SERVER_HOST + "/reply-like", data)
                 .then(res => {
-                    setReplyLikeList(res.data);
-                    console.log(res.data);
+                    let temp = [...replyLikeList];
+                    temp[replyLikeList.findIndex(r => r.replyId === res.data.replyId)] = res.data;
+                    setReplyLikeList(temp);
                 })
                 .catch(err => {
                     alert("댓글 좋아요 설정 실패");
