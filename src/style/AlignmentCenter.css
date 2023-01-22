@@ -1,27 +1,27 @@
-.alignmentCenter{
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 15px;
+.alignmentCenter {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 15px;
 }
 
-.largePaggind{
-    padding: 100px 30px 100px 30px;
+.largePaggind {
+  padding: 100px 30px 100px 30px;
 }
 
-.normalPadding{
-    padding: 10px 30px 10px 30px;
+.normalPadding {
+  padding: 10px 30px 10px 30px;
 }
 
 .koreanFont {
-    font-family: 'Jeju Myeongjo', serif;
+  font-family: "Jeju Myeongjo", serif;
 }
 
-th{
-    text-align: center;
+th {
+  text-align: center;
 }
 
-td{
-    text-align: center;
+td {
+  text-align: center;
 }
