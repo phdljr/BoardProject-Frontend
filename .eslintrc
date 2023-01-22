@@ -1,0 +1,9 @@
+{
+  "extends": ["airbnb", "airbnb/hooks", "prettier"],
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
+  },
+  "env": { "browser": true }
+}
