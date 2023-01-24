@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
-import axios from "axios";
+import { register } from "../../api";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../style/AlignmentCenter.css";
@@ -12,10 +12,9 @@ export default function RegisterPage() {
   const [user, setUser] = useState({ email: "", password: "", nickname: "" });
   const navigate = useNavigate();
 
-  const register = () => {
-    axios.post(`${process.env.REACT_APP_SERVER_HOST}/register`, user).then(() => {
-      navigate("/");
-    });
+  const handleRegister = async () => {
+    await register(user);
+    navigate("/");
   };
 
   const handleNickname = (e) => {
@@ -67,7 +66,7 @@ export default function RegisterPage() {
           <br />
 
           <div className="d-grid gap-1">
-            <Button variant="primary" onClick={register}>
+            <Button variant="primary" onClick={handleRegister}>
               회원가입
             </Button>
           </div>

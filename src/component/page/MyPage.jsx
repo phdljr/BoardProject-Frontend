@@ -2,15 +2,17 @@ import { Card } from "react-bootstrap";
 import useMemberStore from "../../store/MemberStore";
 
 export default function MyPage() {
-  const { memberData } = useMemberStore();
+  const {
+    memberData: { memberId, nickname, memberType },
+  } = useMemberStore();
   return (
     <Card className="alignmentCenter">
       <Card.Body>
-        id: {memberData.memberId}
+        id: {memberId}
         <hr />
-        nickname: {memberData.nickname}
+        nickname: {nickname}
         <hr />
-        type: {memberData.memberType}
+        type: {memberType}
       </Card.Body>
     </Card>
   );

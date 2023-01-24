@@ -1,5 +1,6 @@
-import create from "zustand";
+import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { login, logout } from "../api";
 
 const useMemberStore = create(
   persist(
@@ -10,17 +11,17 @@ const useMemberStore = create(
         nickname: null,
         memberType: "USER",
       },
-      login: (data) => {
+      login: async () => {
+        const data = await login();
         set(() => ({
           memberData: {
             isLogin: true,
-            memberId: data.memberId,
-            nickname: data.nickname,
-            memberType: data.memberType,
+            ...data,
           },
         }));
       },
-      logout: () => {
+      logout: async () => {
+        await logout();
         set(() => ({
           memberData: {
             isLogin: false,

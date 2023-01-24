@@ -1,9 +1,11 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import useMemberStore from "../../store/MemberStore";
+import { getBoard, dislikeReply, dislikeBoard, likeBoard, likeReply } from "../../api";
 import "../../style/AlignmentCenter.css";
+
+const LOAD_STATUS = { loading: "loading", idle: "idle", error: "error" };
 
 export default function BoardPage() {
   const { boardId } = useParams();
@@ -12,149 +14,69 @@ export default function BoardPage() {
   const [boardLike, setBoardLike] = useState();
   const [replyList, setReplyList] = useState([]);
   const [replyLikeList, setReplyLikeList] = useState([]);
-  const [loadData, isLoadData] = useState(null);
+  const [loadStatus, setLoadStatus] = useState(LOAD_STATUS.loading);
 
   const navigate = useNavigate();
   const { memberData } = useMemberStore();
 
-  const handleBoardLike = () => {
+  const handleBoardLike = async () => {
     if (!memberData.isLogin) {
       alert("로그인 하신 후 이용해 주시기 바랍니다.");
       return;
     }
 
-    const data = {
-      memberId: memberData.memberId,
-      boardId,
-    };
-
-    if (boardLike.hasLiked) {
-      axios
-        .delete(`${process.env.REACT_APP_SERVER_HOST}/board-like/${boardId}/${memberData.memberId}`)
-        .then((res) => {
-          setBoardLike(res.data);
-        })
-        .catch((_err) => {
-          alert("게시판 좋아요 해제 실패");
-        });
-    } else {
-      axios
-        .post(`${process.env.REACT_APP_SERVER_HOST}/board-like`, data)
-        .then((res) => {
-          setBoardLike(res.data);
-        })
-        .catch((_err) => {
-          alert("게시판 좋아요 설정 실패");
-        });
-    }
+    boardLike.hasLiked
+      ? setBoardLike(await dislikeBoard(boardId, memberData.memberId))
+      : setBoardLike(await likeBoard(boardId, memberData.memberId));
   };
 
-  const handleReplyLike = (reply) => {
+  const handleReplyLike = async ({ hasLiked, replyId }) => {
     if (!memberData.isLogin) {
       alert("로그인 하신 후 이용해 주시기 바랍니다.");
       return;
     }
 
-    const data = {
-      memberId: memberData.memberId,
-      replyId: reply.replyId,
-    };
-
-    if (reply.hasLiked) {
-      axios
-        .delete(
-          `${process.env.REACT_APP_SERVER_HOST}/reply-like/${reply.replyId}/${memberData.memberId}`
-        )
-        .then((res) => {
-          const temp = [...replyLikeList];
-          temp[replyLikeList.findIndex((r) => r.replyId === res.data.replyId)] = res.data;
-          setReplyLikeList(temp);
-        })
-        .catch((_err) => {
-          alert("댓글 좋아요 해제 실패");
-        });
+    if (hasLiked) {
+      const data = await dislikeReply(replyId, memberData.memberId);
+      setReplyLikeList((prev) => {
+        const next = [...prev];
+        next[next.findIndex((r) => r.replyId === data.replyId)] = data;
+        return next;
+      });
     } else {
-      axios
-        .post(`${process.env.REACT_APP_SERVER_HOST}/reply-like`, data)
-        .then((res) => {
-          const temp = [...replyLikeList];
-          temp[replyLikeList.findIndex((r) => r.replyId === res.data.replyId)] = res.data;
-          setReplyLikeList(temp);
-        })
-        .catch((_err) => {
-          alert("댓글 좋아요 설정 실패");
-        });
+      const data = likeReply(replyId, memberData.memberId);
+      setReplyLikeList((prev) => [...prev, data]);
     }
   };
 
   useEffect(() => {
-    function getReplyLike() {
-      axios
-        .get(`${process.env.REACT_APP_SERVER_HOST}/reply-like/${boardId}/${memberData.memberId}`)
-        .then((res) => {
-          setReplyLikeList(res.data);
-          isLoadData(true);
-        })
-        .catch((_err) => {
-          isLoadData(false);
-          console.log("댓글 좋아요 실패");
-        });
-    }
-
-    function getReply() {
-      axios
-        .get(`${process.env.REACT_APP_SERVER_HOST}/reply/${boardId}`)
-        .then((res) => {
-          setReplyList(res.data);
-          getReplyLike();
-        })
-        .catch(() => {
-          isLoadData(false);
-          console.log("댓글 실패");
-        });
-    }
-
-    function getBoardLike() {
-      axios
-        .get(`${process.env.REACT_APP_SERVER_HOST}/board-like/${boardId}/${memberData.memberId}`)
-        .then((res) => {
-          setBoardLike(res.data);
-          getReply();
-        })
-        .catch(() => {
-          isLoadData(false);
-          console.log("게시글 좋아요 실패");
-        });
-    }
-    function getBoard() {
-      axios
-        .get(`${process.env.REACT_APP_SERVER_HOST}/board/${boardId}`)
-        .then((res) => {
-          setBoard(res.data);
-          getBoardLike();
-        })
-        .catch(() => {
-          isLoadData(false);
-          console.log("게시글 실패");
-        });
-    }
-    getBoard();
+    setLoadStatus(LOAD_STATUS.loading);
+    getBoard(boardId, memberData.memberId)
+      .then((data) => {
+        setBoard(data.board);
+        setBoardLike(data.boardLike);
+        setReplyList(data.reply);
+        setReplyLikeList(data.replyLike);
+        setLoadStatus(LOAD_STATUS.idle);
+      })
+      .error(() => setLoadStatus(LOAD_STATUS.error));
   }, [boardId, memberData.memberId]);
 
-  if (loadData === null) {
+  if (loadStatus === LOAD_STATUS.loading) {
     return (
       <Card body className="alignmentCenter normalPadding shadow">
         데이터 요청중...
       </Card>
     );
   }
-  if (!loadData) {
+  if (loadStatus === LOAD_STATUS.error) {
     return (
       <Card body className="alignmentCenter normalPadding shadow">
         데이터를 가져오지 못했습니다.
       </Card>
     );
   }
+
   return (
     <div style={{ padding: "50px 200px 50px 200px" }}>
       <Card style={{ width: "100%" }}>

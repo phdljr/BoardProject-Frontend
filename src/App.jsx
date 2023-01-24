@@ -16,7 +16,7 @@ export default function App() {
       {/* Routes 외부에선 모든 페이지에서 다 나옴 */}
       <Header />
       {/* Routes 내부에선 페이지마다 다르게 보여짐 */}
-      <Routes>
+      <Routes >
         <Route path="/" element={<MainPage />} />
         <Route path="/board" element={<BoardListPage />} />
         <Route path="/board/:boardId" element={<BoardPage />} />

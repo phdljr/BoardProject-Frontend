@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import Pagination from "react-bootstrap/Pagination";
@@ -6,28 +5,26 @@ import { Card } from "react-bootstrap";
 import "../../style/AlignmentCenter.css";
 import { LinkContainer } from "react-router-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { getBoardList } from "../../api";
+
+const LOAD_STATUS = { loading: "loading", idle: "idle", error: "error" };
 
 export default function BoardListPage() {
   const [boardList, setBoardList] = useState([]);
   const [pageData, setPageData] = useState(null);
-  const [loadData, isLoadData] = useState(null);
+  const [loadStatus, setLoadStatus] = useState(LOAD_STATUS.loading);
   const [currentPageNumber, setCurrentPageNumber] = useState(1);
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_SERVER_HOST}/board?page=${currentPageNumber}`)
-      .then((res) => {
-        const { boardList: newBoardList, ...newPageData } = res.data;
+    setLoadStatus(LOAD_STATUS.loading);
+    getBoardList(currentPageNumber)
+      .then(({ boardList: newBoardList, ...newPageData }) => {
         setBoardList(newBoardList);
         setPageData(newPageData);
-        isLoadData(true);
-        console.log(res.data);
+        setLoadStatus(LOAD_STATUS.idle);
       })
-      .catch(() => {
-        isLoadData(false);
-        console.log("실패");
-      });
+      .catch(() => setLoadStatus(LOAD_STATUS.error));
   }, [currentPageNumber]);
 
   function formatDate(date) {
@@ -40,20 +37,21 @@ export default function BoardListPage() {
     navigate(`/board?page=${pageNumber}`);
   }
 
-  if (loadData === null) {
+  if (loadStatus === LOAD_STATUS.loading) {
     return (
       <Card body className="alignmentCenter normalPadding shadow">
         데이터 요청중...
       </Card>
     );
   }
-  if (!loadData) {
+  if (loadStatus === LOAD_STATUS.error) {
     return (
       <Card body className="alignmentCenter normalPadding shadow">
         데이터를 가져오지 못했습니다.
       </Card>
     );
   }
+
   return (
     <>
       <Table hover>
@@ -88,7 +86,7 @@ export default function BoardListPage() {
           }}
         />
         <Pagination.Prev
-          disabled={!pageData.previousPage}
+          disabled={!pageData?.previousPage}
           onClick={(e) => {
             movePage(currentPageNumber - 1, e);
           }}
@@ -105,7 +103,7 @@ export default function BoardListPage() {
           </Pagination.Item>
         ))}
         <Pagination.Next
-          disabled={!pageData.nextPage}
+          disabled={!pageData?.nextPage}
           onClick={(e) => {
             movePage(currentPageNumber + 1, e);
           }}

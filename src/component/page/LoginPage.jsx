@@ -3,7 +3,6 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
-import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../style/AlignmentCenter.css";
@@ -14,17 +13,9 @@ export default function Login() {
   const navigate = useNavigate();
   const { login } = useMemberStore();
 
-  const handleLogin = () => {
-    axios
-      .post(`${process.env.REACT_APP_SERVER_HOST}/login`, user)
-      .then((res) => {
-        console.log(res.data);
-        login(res.data);
-        navigate("/");
-      })
-      .catch(() => {
-        alert("로그인 실패");
-      });
+  const handleLogin = async () => {
+    await login();
+    navigate("/");
   };
 
   const handleEmail = (e) => {
