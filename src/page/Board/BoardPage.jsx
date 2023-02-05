@@ -55,7 +55,7 @@ export default function BoardPage() {
         setBoardLike(data.boardLike);
         setReplyList(data.reply);
         setReplyLikeList(data.replyLike);
-        setLoadStatus(LOAD_STATUS.loading);
+        setLoadStatus(LOAD_STATUS.idle);
       })
       .catch(() => setLoadStatus(LOAD_STATUS.error));
   }, [boardId, memberData.memberId]);
@@ -76,7 +76,7 @@ export default function BoardPage() {
   }
 
   return (
-    <div style={{ padding: "50px 200px 50px 200px" }}>
+    <div className="mt-5">
       <Card style={{ width: "100%" }}>
         <Card.Body>
           <Card.Title as="h1">{board.title}</Card.Title>
