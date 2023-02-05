@@ -3,6 +3,8 @@
   "rules": {
     "react/react-in-jsx-scope": "off",
     "react/jsx-one-expression-per-line": "off",
+    "react/prop-types": "off",
+    "react/jsx-no-bind": "off",
     "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     "no-underscore-dangle": ["error", { "allow": ["^_"] }],
     "import/prefer-default-export": "off"

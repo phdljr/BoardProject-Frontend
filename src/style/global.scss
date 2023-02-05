@@ -1,0 +1,27 @@
+.normal-padding {
+  padding: 10px 30px 10px 30px;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.korean-font {
+  font-family: "Jeju Myeongjo", serif;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+th {
+  text-align: center;
+}
+
+td {
+  text-align: center;
+}

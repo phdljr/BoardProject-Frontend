@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import useMemberStore from "../store/MemberStore";
-import { getBoard, dislikeReply, dislikeBoard, likeBoard, likeReply } from "../api";
-import "../style/AlignmentCenter.css";
+import useMemberStore from "../../store/MemberStore";
+import { getBoard, dislikeReply, dislikeBoard, likeBoard, likeReply } from "../../api";
 
 const LOAD_STATUS = { loading: "loading", idle: "idle", error: "error" };
 
@@ -56,21 +55,21 @@ export default function BoardPage() {
         setBoardLike(data.boardLike);
         setReplyList(data.reply);
         setReplyLikeList(data.replyLike);
-        setLoadStatus(LOAD_STATUS.idle);
+        setLoadStatus(LOAD_STATUS.loading);
       })
       .catch(() => setLoadStatus(LOAD_STATUS.error));
   }, [boardId, memberData.memberId]);
 
   if (loadStatus === LOAD_STATUS.loading) {
     return (
-      <Card body className="alignmentCenter normalPadding shadow">
+      <Card body className="center m-5 shadow">
         데이터 요청중...
       </Card>
     );
   }
   if (loadStatus === LOAD_STATUS.error) {
     return (
-      <Card body className="alignmentCenter normalPadding shadow">
+      <Card body className="cetner m-5 shadow">
         데이터를 가져오지 못했습니다.
       </Card>
     );

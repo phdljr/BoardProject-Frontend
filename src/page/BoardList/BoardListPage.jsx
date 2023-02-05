@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
-import Table from "react-bootstrap/Table";
-import Pagination from "react-bootstrap/Pagination";
-import { Card } from "react-bootstrap";
-import "../style/AlignmentCenter.css";
+import { Card, Table } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { getBoardList } from "../api";
+import Pagination from "../../component/Pagination/Pagination";
+import { getBoardList } from "../../api";
 
 const LOAD_STATUS = { loading: "loading", idle: "idle", error: "error" };
 
@@ -42,14 +40,14 @@ export default function BoardListPage() {
 
   if (loadStatus === LOAD_STATUS.loading) {
     return (
-      <Card body className="alignmentCenter normalPadding shadow">
+      <Card body className="center m-5 shadow">
         데이터 요청중...
       </Card>
     );
   }
   if (loadStatus === LOAD_STATUS.error) {
     return (
-      <Card body className="alignmentCenter normalPadding shadow">
+      <Card body className="center m-5 shadow">
         데이터를 가져오지 못했습니다.
       </Card>
     );
@@ -81,42 +79,14 @@ export default function BoardListPage() {
           ))}
         </tbody>
       </Table>
-      <Pagination style={{ justifyContent: "center" }}>
-        <Pagination.First
-          disabled={currentPageNumber === 1}
-          onClick={(e) => {
-            movePage(1, e);
-          }}
-        />
-        <Pagination.Prev
-          disabled={!(pageData?.previousPage ?? false)}
-          onClick={(e) => {
-            movePage(currentPageNumber - 1, e);
-          }}
-        />
-        {pageData.pageList.map((pageNumber) => (
-          <Pagination.Item
-            key={pageNumber}
-            active={pageNumber === pageData.currentPageNumber}
-            onClick={(e) => {
-              movePage(pageNumber, e);
-            }}
-          >
-            {pageNumber}
-          </Pagination.Item>
-        ))}
-        <Pagination.Next
-          disabled={!pageData?.nextPage}
-          onClick={(e) => {
-            movePage(currentPageNumber + 1, e);
-          }}
-        />
-        <Pagination.Last
-          onClick={(e) => {
-            movePage(pageData.totalPageNumber, e);
-          }}
-        />
-      </Pagination>
+      <Pagination
+        pageList={pageData.pageList}
+        currentPageNumber={pageData.currentPageNumber}
+        nextPage={pageData.nextPage}
+        previousPage={pageData.previousPage}
+        totalPageNumber={pageData.totalPageNumber}
+        onChangePage={movePage}
+      />
     </>
   );
 }
