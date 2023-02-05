@@ -1,21 +1,21 @@
 import axios from "./axios";
 
-async function _getReplyLike(boardId, memberId) {
+async function getReplyLike(boardId, memberId) {
   const res = await axios.get(`/reply-like/${boardId}/${memberId}`);
   return res.data;
 }
 
-async function _getReply(boardId) {
+async function getReply(boardId) {
   const res = await axios.get(`/reply/${boardId}`);
   return res.data;
 }
 
-async function _getBoardLike(boardId, memberId) {
+async function getBoardLike(boardId, memberId) {
   const res = await axios.get(`/board-like/${boardId}/${memberId}`);
   return res.data;
 }
 
-async function _getBoardOne(boardId) {
+async function getBoardOne(boardId) {
   const res = await axios.get(`/board/${boardId}`);
   return res.data;
 }
@@ -28,10 +28,10 @@ async function _getBoardOne(boardId) {
  */
 const getBoard = async (boardId, memberId) => {
   const result = {
-    board: await _getBoardOne(boardId),
-    boardLike: await _getBoardLike(boardId, memberId),
-    reply: await _getReply(boardId),
-    replyLike: await _getReplyLike(boardId, memberId),
+    board: await getBoardOne(boardId),
+    boardLike: await getBoardLike(boardId, memberId),
+    reply: await getReply(boardId),
+    replyLike: await getReplyLike(boardId, memberId),
   };
 
   return result;
@@ -44,7 +44,6 @@ const getBoard = async (boardId, memberId) => {
  */
 const getBoardList = async (currentPageNumber) => {
   const { data } = await axios.get(`/board?page=${currentPageNumber}`);
-
   return data;
 };
 

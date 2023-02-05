@@ -3,10 +3,9 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
-import { register } from "../../api";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../style/AlignmentCenter.css";
+import { register } from "../../api";
 
 export default function RegisterPage() {
   const [user, setUser] = useState({ email: "", password: "", nickname: "" });
@@ -30,7 +29,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="alignmentCenter largePaggind shadow">
+    <div className="center py-4 my-5 shadow">
       <Container className="panel">
         <Form>
           <Form.Group as={Row} className="mb-3" controlId="formBasicEmail">

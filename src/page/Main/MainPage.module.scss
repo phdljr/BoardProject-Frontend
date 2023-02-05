@@ -1,3 +1,10 @@
+.page {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .slide {
   animation-duration: 5s;
   animation-name: slidein;

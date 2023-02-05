@@ -5,7 +5,6 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../style/AlignmentCenter.css";
 import useMemberStore from "../../store/MemberStore";
 
 export default function Login() {
@@ -14,7 +13,7 @@ export default function Login() {
   const { login } = useMemberStore();
 
   const handleLogin = async () => {
-    await login();
+    await login(user);
     navigate("/");
   };
 
@@ -27,7 +26,7 @@ export default function Login() {
   };
 
   return (
-    <div className="alignmentCenter largePaggind shadow">
+    <div className="center py-4 my-5 shadow">
       <Container className="panel">
         <Form>
           <Form.Group as={Row} className="mb-3" controlId="formPlaintext">

@@ -11,8 +11,8 @@ const useMemberStore = create(
         nickname: null,
         memberType: "USER",
       },
-      login: async () => {
-        const data = await login();
+      login: async (user) => {
+        const data = await login(user);
         set(() => ({
           memberData: {
             isLogin: true,

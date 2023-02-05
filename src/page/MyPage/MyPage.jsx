@@ -6,7 +6,7 @@ export default function MyPage() {
     memberData: { memberId, nickname, memberType },
   } = useMemberStore();
   return (
-    <Card className="alignmentCenter">
+    <Card className="center">
       <Card.Body>
         id: {memberId}
         <hr />
