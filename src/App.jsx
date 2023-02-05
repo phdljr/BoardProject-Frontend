@@ -20,7 +20,7 @@ export default function App() {
       <Routes>
         <Route
           element={
-            <Container>
+            <Container style={{ height: "100%" }}>
               <Outlet />
             </Container>
           }

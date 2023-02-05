@@ -46,7 +46,7 @@ export default function BoardListPage() {
   }
 
   return (
-    <>
+    <div className="pt-3">
       <BoardList boardList={boardList} />
       <Pagination
         pageList={pageData.pageList}
@@ -56,6 +56,6 @@ export default function BoardListPage() {
         totalPageNumber={pageData.totalPageNumber}
         onChangePage={movePage}
       />
-    </>
+    </div>
   );
 }

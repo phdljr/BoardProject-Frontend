@@ -1,21 +1,20 @@
 import { useEffect, useState } from "react";
-import { Button, Card, Form, InputGroup } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
+import { Card } from "react-bootstrap";
+import { useParams } from "react-router-dom";
 import useMemberStore from "../../store/MemberStore";
 import { getBoard, dislikeReply, dislikeBoard, likeBoard, likeReply } from "../../api";
+import Board from "../../component/Board/Board";
 
 const LOAD_STATUS = { loading: "loading", idle: "idle", error: "error" };
 
 export default function BoardPage() {
   const { boardId } = useParams();
-
   const [board, setBoard] = useState();
   const [boardLike, setBoardLike] = useState();
   const [replyList, setReplyList] = useState([]);
   const [replyLikeList, setReplyLikeList] = useState([]);
   const [loadStatus, setLoadStatus] = useState(LOAD_STATUS.loading);
 
-  const navigate = useNavigate();
   const { memberData } = useMemberStore();
 
   const handleBoardLike = async () => {
@@ -77,66 +76,14 @@ export default function BoardPage() {
 
   return (
     <div className="mt-5">
-      <Card style={{ width: "100%" }}>
-        <Card.Body>
-          <Card.Title as="h1">{board.title}</Card.Title>
-          <Card.Subtitle className="mb-2 text-muted">
-            <div style={{ float: "left" }}>{board.nickname}</div>
-            <div style={{ float: "right" }}>조회수: {board.hit}</div>
-          </Card.Subtitle>
-          <br />
-          <hr />
-          <Card.Text style={{ padding: "50px 0px 50px 0px" }}>{board.content}</Card.Text>
-          <div style={{ textAlign: "center" }}>
-            <Button
-              variant={boardLike.hasLiked ? "danger" : "outline-danger"}
-              onClick={handleBoardLike}
-            >
-              👍{boardLike.countLike}
-            </Button>
-          </div>
-          <div>댓글</div>
-
-          {replyList.map((reply, index) => (
-            <div key={reply}>
-              <hr />
-              {reply.nickname}
-              <br />
-              {reply.content}
-              <br />
-              <Button
-                variant={replyLikeList[index].hasLiked ? "danger" : "outline-danger"}
-                style={{ marginTop: "5px" }}
-                size="sm"
-                onClick={() => handleReplyLike(replyLikeList[index])}
-              >
-                👍{replyLikeList[index].countLike}
-              </Button>
-            </div>
-          ))}
-
-          <InputGroup className="mb-3" style={{ paddingTop: "20px" }}>
-            <Form.Control
-              placeholder="댓글을 작성해주세요."
-              aria-label="댓글을 작성해주세요."
-              aria-describedby="basic-addon2"
-              style={{ height: "100px" }}
-            />
-            <Button variant="primary" id="button-addon2">
-              댓글 작성
-            </Button>
-          </InputGroup>
-        </Card.Body>
-        <Card.Footer>
-          <Button
-            onClick={(_e) => {
-              navigate("/board");
-            }}
-          >
-            게시판으로
-          </Button>
-        </Card.Footer>
-      </Card>
+      <Board
+        board={board}
+        boardLike={boardLike}
+        replyLikeList={replyLikeList}
+        replyList={replyList}
+        onClickLike={handleBoardLike}
+        onClickReplyLike={handleReplyLike}
+      />
     </div>
   );
 }

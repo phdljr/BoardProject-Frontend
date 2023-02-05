@@ -13,7 +13,7 @@ export default function Header() {
   };
 
   return (
-    <Navbar bg="primary" variant="dark" style={{ padding: "5px 10px 5px 10px" }}>
+    <Navbar bg="primary" variant="dark" className="py-2 px-2">
       <LinkContainer to="/">
         <Navbar.Brand>SoupBoard</Navbar.Brand>
       </LinkContainer>
