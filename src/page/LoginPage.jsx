@@ -5,8 +5,8 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../style/AlignmentCenter.css";
-import useMemberStore from "../../store/MemberStore";
+import "../style/AlignmentCenter.css";
+import useMemberStore from "../store/MemberStore";
 
 export default function Login() {
   const [user, setUser] = useState({ email: "", password: "" });
@@ -14,7 +14,7 @@ export default function Login() {
   const { login } = useMemberStore();
 
   const handleLogin = async () => {
-    await login();
+    await login(user);
     navigate("/");
   };
 

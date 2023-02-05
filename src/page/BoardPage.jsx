@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import useMemberStore from "../../store/MemberStore";
-import { getBoard, dislikeReply, dislikeBoard, likeBoard, likeReply } from "../../api";
-import "../../style/AlignmentCenter.css";
+import useMemberStore from "../store/MemberStore";
+import { getBoard, dislikeReply, dislikeBoard, likeBoard, likeReply } from "../api";
+import "../style/AlignmentCenter.css";
 
 const LOAD_STATUS = { loading: "loading", idle: "idle", error: "error" };
 
@@ -25,9 +25,8 @@ export default function BoardPage() {
       return;
     }
 
-    boardLike.hasLiked
-      ? setBoardLike(await dislikeBoard(boardId, memberData.memberId))
-      : setBoardLike(await likeBoard(boardId, memberData.memberId));
+    if (boardLike.hasLiked) setBoardLike(await dislikeBoard(boardId, memberData.memberId));
+    else setBoardLike(await likeBoard(boardId, memberData.memberId));
   };
 
   const handleReplyLike = async ({ hasLiked, replyId }) => {
@@ -59,7 +58,7 @@ export default function BoardPage() {
         setReplyLikeList(data.replyLike);
         setLoadStatus(LOAD_STATUS.idle);
       })
-      .error(() => setLoadStatus(LOAD_STATUS.error));
+      .catch(() => setLoadStatus(LOAD_STATUS.error));
   }, [boardId, memberData.memberId]);
 
   if (loadStatus === LOAD_STATUS.loading) {

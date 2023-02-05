@@ -1,5 +1,5 @@
-import "../../style/AlignmentCenter.css";
-import styles from "../../style/MainPage.module.css";
+import "../style/AlignmentCenter.css";
+import styles from "../style/MainPage.module.css";
 
 export default function MainPage() {
   return (

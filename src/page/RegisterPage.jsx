@@ -3,10 +3,10 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
-import { register } from "../../api";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../style/AlignmentCenter.css";
+import { register } from "../api";
+import "../style/AlignmentCenter.css";
 
 export default function RegisterPage() {
   const [user, setUser] = useState({ email: "", password: "", nickname: "" });

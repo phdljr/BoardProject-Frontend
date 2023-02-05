@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import Pagination from "react-bootstrap/Pagination";
 import { Card } from "react-bootstrap";
-import "../../style/AlignmentCenter.css";
+import "../style/AlignmentCenter.css";
 import { LinkContainer } from "react-router-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { getBoardList } from "../../api";
+import { getBoardList } from "../api";
 
 const LOAD_STATUS = { loading: "loading", idle: "idle", error: "error" };
 
@@ -24,7 +24,10 @@ export default function BoardListPage() {
         setPageData(newPageData);
         setLoadStatus(LOAD_STATUS.idle);
       })
-      .catch(() => setLoadStatus(LOAD_STATUS.error));
+      .catch((e) => {
+        console.log(e);
+        setLoadStatus(LOAD_STATUS.error);
+      });
   }, [currentPageNumber]);
 
   function formatDate(date) {
@@ -86,7 +89,7 @@ export default function BoardListPage() {
           }}
         />
         <Pagination.Prev
-          disabled={!pageData?.previousPage}
+          disabled={!(pageData?.previousPage ?? false)}
           onClick={(e) => {
             movePage(currentPageNumber - 1, e);
           }}

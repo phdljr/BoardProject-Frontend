@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "../../style/AlignmentCenter.css";
+import "../style/AlignmentCenter.css";
 
 export default function EmptyPage() {
   return (

@@ -1,5 +1,5 @@
 import { Card } from "react-bootstrap";
-import useMemberStore from "../../store/MemberStore";
+import useMemberStore from "../store/MemberStore";
 
 export default function MyPage() {
   const {
