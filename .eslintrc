@@ -12,5 +12,18 @@
   "env": { "browser": true },
   "parserOptions": {
     "ecmaVersion": 2022
+  },
+  "settings": {
+    "import/resolver": {
+      "eslint-import-resolver-custom-alias": {
+        "alias": {
+          "@": "./src",
+          "@component": "./component",
+          "@public": "./public"
+        },
+        "extensions": [".js", ".jsx"],
+        "packages": ["packages/*"]
+      }
+    }
   }
 }
