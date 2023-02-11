@@ -1,29 +1,21 @@
+@use "../../style/variables" as v;
+
 .page {
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background-color: v.$purple;
+  color: white;
 }
 
-.slide {
-  animation-duration: 5s;
-  animation-name: slidein;
-  animation-iteration-count: infinite;
+.title {
+  font-size: 112pt;
+  margin-bottom: 60px;
 }
 
-@keyframes slidein {
-  from {
-    /* margin-left: 100px; */
-    font-size: 50px;
-  }
+.clipboard {
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
 
-  50% {
-    /* margin-left: -100px; */
-    font-size: 30px;
-  }
-
-  to {
-    /* margin-left: 100px; */
-    font-size: 50px;
+  &:hover {
+    transform: scale(1.05);
   }
 }

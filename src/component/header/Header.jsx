@@ -18,9 +18,6 @@ export default function Header() {
         <Navbar.Brand>SoupBoard</Navbar.Brand>
       </LinkContainer>
       <Nav className="me-auto">
-        <LinkContainer to="/">
-          <Nav.Link>메인화면</Nav.Link>
-        </LinkContainer>
         <LinkContainer to="/board">
           <Nav.Link>게시판</Nav.Link>
         </LinkContainer>

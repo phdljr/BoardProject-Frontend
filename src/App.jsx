@@ -18,6 +18,7 @@ export default function App() {
       <Header />
       {/* Routes 내부에선 페이지마다 다르게 보여짐 */}
       <Routes>
+        <Route path="/" element={<MainPage />} />
         <Route
           element={
             <Container style={{ height: "100%" }}>
@@ -25,7 +26,6 @@ export default function App() {
             </Container>
           }
         >
-          <Route path="/" element={<MainPage />} />
           <Route path="/board" element={<BoardListPage />} />
           <Route path="/board/:boardId" element={<BoardPage />} />
           <Route path="/login" element={<LoginPage />} />
