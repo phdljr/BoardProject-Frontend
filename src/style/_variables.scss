@@ -1,0 +1,23 @@
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "../node_modules/bootstrap/scss/functions";
+
+// 2. Include any default variable overrides here
+$custom-colors: (
+  "darkblue": #023047,
+  "blue": #3a86ff,
+  "purple": #8338ec,
+  "red": #ff006e,
+  "orange": #fb5607,
+  "yellow": #ffbe0b,
+);
+
+$primary: #023047;
+
+$body-font-size: 12pt;
+
+// 3. Include remainder of required Bootstrap stylesheets (including any separate color mode stylesheets)
+@import "../node_modules/bootstrap/scss/variables";
+
+// 4. Include any default map overrides here
+// Merge the maps
+$theme-colors: map-merge($theme-colors, $custom-colors);
